@@ -1,2 +1,5 @@
 playground.cpp
 *.out
+node_modules/
+dist/
+.env
