@@ -31,8 +31,8 @@ public:
 int main()
 {
     // Creating objects instances of the Car class
-    Car sierra("Tata", "sierra");
-    Car hilux("Toyota", "hilux");
+    Car sierra("Tata", "Sierra");
+    Car hilux("Toyota", "Hilux");
 
     sierra.accelerate(20);
     hilux.accelerate(50);
