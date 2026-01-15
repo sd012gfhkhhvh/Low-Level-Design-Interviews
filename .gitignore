@@ -1,5 +1,6 @@
-playground.cpp
+playground*
 *.out
 node_modules/
 dist/
+out/
 .env

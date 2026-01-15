@@ -1,8 +1,8 @@
 {
     "code-runner.executorMap": {
         "javascript": "node",
-        "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
-        "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt.out && $dir$fileNameWithoutExt.out",
+        "cpp": "cd $dir && mkdir -p /mnt/data/learning/lld/out && g++ $fileName -o /mnt/data/learning/lld/out/$fileNameWithoutExt.out && /mnt/data/learning/lld/out/$fileNameWithoutExt.out",
+        "java": "cd $dir && mkdir -p /mnt/data/learning/lld/out && javac -d /mnt/data/learning/lld/out $fileName && java -cp /mnt/data/learning/lld/out $fileNameWithoutExt",
         "typescript": "cd $dir && npx ts-node $fileName"
     },
     "prettier.tabWidth": 4
