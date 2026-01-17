@@ -1,5 +1,6 @@
 playground*
 *.out
+*.class
 node_modules/
 dist/
 out/

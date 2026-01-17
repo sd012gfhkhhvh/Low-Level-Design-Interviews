@@ -1,63 +1,61 @@
 #include <iostream>
 using namespace std;
 
-class PaymentGateway
-{
+/*
+======================
+    # Abstruct class
+        - https://www.scaler.com/topics/cpp/abstract-class-in-cpp/
+    # virtual fucntion
+        - https://www.geeksforgeeks.org/cpp/virtual-function-cpp/
+        - https://www.tutorialspoint.com/cplusplus/cpp_virtual_function.htm
+    # pure abstruct class (similar to interface in java)
+        - https://www.geeksforgeeks.org/cpp/cpp-program-to-create-an-interface/
+*/
+class PaymentGateway {
 public:
-    virtual ~PaymentGateway() {}                     // Virtual destructor for proper cleanup
-    virtual void initiatePayment(double amount) = 0; // Pure virtual function
+  virtual ~PaymentGateway() {} // Virtual destructor for proper cleanup
+  virtual void initiatePayment(double amount) = 0; // Pure virtual function
 };
 
-class StripePayment : public PaymentGateway
-{
+class StripePayment : public PaymentGateway {
 public:
-    void initiatePayment(double amount) override
-    {
-        cout << "Processing payment via Stripe: $" << amount << endl;
-    }
+  void initiatePayment(double amount) override {
+    cout << "Processing payment via Stripe: $" << amount << endl;
+  }
 };
 
-class RazorpayPayment : public PaymentGateway
-{
+class RazorpayPayment : public PaymentGateway {
 public:
-    void initiatePayment(double amount) override
-    {
-        cout << "Processing payment via Razorpay: ₹" << amount << endl;
-    }
+  void initiatePayment(double amount) override {
+    cout << "Processing payment via Razorpay: ₹" << amount << endl;
+  }
 };
 
-class CheckoutService
-{
+class CheckoutService {
 private:
-    PaymentGateway *paymentGateway;
+  PaymentGateway *paymentGateway;
 
 public:
-    CheckoutService(PaymentGateway *gateway) : paymentGateway(gateway) {}
+  CheckoutService(PaymentGateway *gateway) : paymentGateway(gateway) {}
 
-    void setPaymentGateway(PaymentGateway *gateway)
-    {
-        paymentGateway = gateway;
-    }
+  void setPaymentGateway(PaymentGateway *gateway) { paymentGateway = gateway; }
 
-    void checkout(double amount)
-    {
-        if (paymentGateway != nullptr)
-        {
-            paymentGateway->initiatePayment(amount);
-        }
+  void checkout(double amount) {
+    if (paymentGateway != nullptr) {
+      paymentGateway->initiatePayment(amount);
     }
+  }
 };
 
-int main()
-{
-    StripePayment stripeGateway;
-    CheckoutService service(&stripeGateway);
-    service.checkout(120.50); // Output: Processing payment via Stripe: $120.5
+int main() {
+  StripePayment stripeGateway;
+  CheckoutService service(&stripeGateway);
+  service.checkout(120.50); // Output: Processing payment via Stripe: $120.5
 
-    // Switch to Razorpay
-    RazorpayPayment razorpayGateway;
-    service.setPaymentGateway(&razorpayGateway);
-    service.checkout(150.50); // Output: Processing payment via Razorpay: ₹150.5
+  // Switch to Razorpay
+  RazorpayPayment razorpayGateway;
+  service.setPaymentGateway(&razorpayGateway);
+  service.checkout(150.50); // Output: Processing payment via Razorpay: ₹150.5
 
-    return 0;
+  return 0;
 }
