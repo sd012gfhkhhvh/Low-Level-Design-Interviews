@@ -69,7 +69,7 @@ class Shape implements Drawable, Movable, Resizable {
 
     draw(): void {
         console.log(
-            `Drawing ${this.name} at (${this.x},${this.y}) size=${this.size}`
+            `Drawing ${this.name} at (${this.x},${this.y}) size=${this.size}`,
         );
     }
 
@@ -303,7 +303,7 @@ class ApiClient implements Config {
     connect(): void {
         console.log(`Connecting with API key: ${this.apiKey.slice(0, 8)}...`);
         console.log(
-            `Timeout: ${this.timeout ?? "default"}, Retries: ${this.retries}`
+            `Timeout: ${this.timeout ?? "default"}, Retries: ${this.retries}`,
         );
     }
 }
@@ -399,3 +399,6 @@ function main(): void {
 }
 
 main();
+
+// Make this file a module to avoid global scope conflicts
+export {};

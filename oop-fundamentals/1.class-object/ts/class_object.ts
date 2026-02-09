@@ -504,3 +504,6 @@ function main(): void {
 
 // Execute the main function
 main();
+
+// Make this file a module to avoid global scope conflicts
+export {};
