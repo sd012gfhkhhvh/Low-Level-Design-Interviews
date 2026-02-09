@@ -74,14 +74,14 @@ Before using the prompt, understand the structure:
 
 Most OOP concepts fit in a single comprehensive file (~100-200 lines):
 
--   ✅ Encapsulation
--   ✅ Interface
--   ✅ Abstract Classes
--   ✅ Enum (your perfect example!)
--   ✅ Operator Overloading
--   ✅ Composition
--   ✅ Constructor/Destructor
--   ✅ Static Members
+- ✅ Encapsulation
+- ✅ Interface
+- ✅ Abstract Classes
+- ✅ Enum (your perfect example!)
+- ✅ Operator Overloading
+- ✅ Composition
+- ✅ Constructor/Destructor
+- ✅ Static Members
 
 ### **When to Split into Subtopics (RARE)**
 
@@ -110,10 +110,10 @@ inheritance/
 
 ### **README Strategy**
 
--   **Always ONE README per topic per language**
--   Even with multiple code files, write ONE unified README
--   README should reference all code files in that directory
--   Structure README with sections for each code file
+- **Always ONE README per topic per language**
+- Even with multiple code files, write ONE unified README
+- README should reference all code files in that directory
+- Structure README with sections for each code file
 
 ### **Decision Matrix**
 
@@ -163,7 +163,6 @@ This prompt is integrated into the workflow: `/refactor-and-document`
 To use the workflow:
 
 1. **Write your code** in the appropriate directory:
-
     - Format: `oop-fundamentals/[topic]/[language]/[topic].[ext]`
     - Example: `oop-fundamentals/polymorphism/cpp/polymorphism.cpp`
 
@@ -202,29 +201,27 @@ oop-fundamentals/
 
 ### Expected README Length
 
--   **200-250 lines** of comprehensive documentation
--   Theoretical + Practical balance
--   Multiple examples and comparisons
+- **200-250 lines** of comprehensive documentation
+- Theoretical + Practical balance
+- Multiple examples and comparisons
 
 ### Code File Structure
 
--   **100-150 lines** of well-commented code
--   5-7 major sections
--   Complete runnable examples
--   Demonstration/main function
+- **100-150 lines** of well-commented code
+- 5-7 major sections
+- Complete runnable examples
+- Demonstration/main function
 
 ---
 
 ## 💡 TIPS
 
 1. **Before documenting**:
-
     - Ensure your code compiles
     - Run it to verify it works
     - Think about what concepts you want to highlight
 
 2. **During documentation**:
-
     - Reference existing documented topics for consistency
     - Ask for specific examples if needed
     - Request comparisons with other languages
@@ -242,16 +239,17 @@ oop-fundamentals/
 ### **Phase 1: Fundamentals** (Start Here)
 
 1. ✅ Enum (Complete)
-2. 🚧 Class and Object (In Progress)
+2. ✅ Class and Object (Completed)
 3. 🚧 Encapsulation (Access modifiers, getters/setters)
 4. 🚧 Constructor & Destructor
-5. 🚧 Static Members
-6. 🚧 This Pointer (C++)
+5. ✅ Static Members
+6. ✅ This Pointer (C++)
+7. ✅ Constructors and Destructors
 
 ### **Phase 2: Advanced OOP Concepts**
 
 7. 🚧 Operator Overloading (separate from interface!)
-8. 🚧 Interface
+8. ✅ Interface
 9. 🚧 Abstract Classes
 10. 🚧 Inheritance (may split: single, multiple, diamond)
 11. 🚧 Polymorphism (split: compile-time, runtime)
