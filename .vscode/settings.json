@@ -1,9 +1,9 @@
 {
-    "code-runner.executorMap": {
-        "javascript": "node",
-        "cpp": "cd $dir && mkdir -p /mnt/data/learning/lld/out && g++ $fileName -o /mnt/data/learning/lld/out/$fileNameWithoutExt.out && /mnt/data/learning/lld/out/$fileNameWithoutExt.out",
-        "java": "cd $dir && mkdir -p /mnt/data/learning/lld/out && javac -d /mnt/data/learning/lld/out $fileName && java -cp /mnt/data/learning/lld/out $fileNameWithoutExt",
-        "typescript": "cd $dir && npx ts-node $fileName"
-    },
-    "prettier.tabWidth": 4
+  "code-runner.executorMap": {
+    "javascript": "node",
+    "cpp": "cd $dir && mkdir -p /mnt/data/learning/lld/out && g++ $fileName -o /mnt/data/learning/lld/out/$fileNameWithoutExt.out && /mnt/data/learning/lld/out/$fileNameWithoutExt.out",
+    "java": "cd $dir && mkdir -p /mnt/data/learning/lld/out && javac -d /mnt/data/learning/lld/out $fileName && java -cp /mnt/data/learning/lld/out $fileNameWithoutExt",
+    "typescript": "cd $dir && npx ts-node $fileName"
+  }
+  // "prettier.tabWidth": 4
 }
