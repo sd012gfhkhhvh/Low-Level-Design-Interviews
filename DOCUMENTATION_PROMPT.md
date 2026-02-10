@@ -114,6 +114,7 @@ inheritance/
 - Even with multiple code files, write ONE unified README
 - README should reference all code files in that directory
 - Structure README with sections for each code file
+- README should be like a technical blog/tutorial, try to explain sections, subsection and code examples in brief paragraphs or points if needed be.
 
 ### **Decision Matrix**
 
@@ -163,21 +164,21 @@ This prompt is integrated into the workflow: `/refactor-and-document`
 To use the workflow:
 
 1. **Write your code** in the appropriate directory:
-    - Format: `oop-fundamentals/[topic]/[language]/[topic].[ext]`
-    - Example: `oop-fundamentals/polymorphism/cpp/polymorphism.cpp`
+   - Format: `oop-fundamentals/[topic]/[language]/[topic].[ext]`
+   - Example: `oop-fundamentals/polymorphism/cpp/polymorphism.cpp`
 
 2. **Run the workflow**:
 
-    ```
-    /refactor-and-document
-    ```
+   ```
+   /refactor-and-document
+   ```
 
-    Then provide the topic name and language when prompted.
+   Then provide the topic name and language when prompted.
 
 3. **Review and iterate**:
-    - Check the refactored code
-    - Review the README.md
-    - Request adjustments if needed
+   - Check the refactored code
+   - Review the README.md
+   - Request adjustments if needed
 
 ---
 
@@ -217,20 +218,20 @@ oop-fundamentals/
 ## 💡 TIPS
 
 1. **Before documenting**:
-    - Ensure your code compiles
-    - Run it to verify it works
-    - Think about what concepts you want to highlight
+   - Ensure your code compiles
+   - Run it to verify it works
+   - Think about what concepts you want to highlight
 
 2. **During documentation**:
-    - Reference existing documented topics for consistency
-    - Ask for specific examples if needed
-    - Request comparisons with other languages
+   - Reference existing documented topics for consistency
+   - Ask for specific examples if needed
+   - Request comparisons with other languages
 
 3. **After documentation**:
-    - Read through the README
-    - Run the refactored code
-    - Check if all concepts are clear
-    - Update if you discover new insights
+   - Read through the README
+   - Run the refactored code
+   - Check if all concepts are clear
+   - Update if you discover new insights
 
 ---
 
