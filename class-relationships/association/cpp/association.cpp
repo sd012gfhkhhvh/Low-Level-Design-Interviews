@@ -2,358 +2,396 @@
 #include <iostream>
 #include <string>
 #include <vector>
-using namespace std;
 
-/*
-Ref - https://algomaster.io/learn/lld/association
-Ref -
-https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-aggregation-vs-composition/
+// Ref - https://algomaster.io/learn/lld/association
+// Ref - https://www.geeksforgeeks.org/association-composition-aggregation-java/
+// Ref -
+// https://www.visual-paradigm.com/guide/uml-unified-modeling-language/uml-aggregation-vs-composition/
 
-1. What is Association?
-Association represents a relationship between two classes where one object has,
-uses, communicates with, or references another.
+//
+// =======================================================
+// 1. WHAT IS ASSOCIATION?
+// =======================================================
+//
+// Association represents a relationship where objects use, know about, or
+// communicate with each other.
+//
+// Key Formula:
+// Association = "uses-a" or "has-a" relationship (loosely coupled)
+//
+// Mental Model:
+// Think of association like your relationship with your barber:
+// - You use their service
+// - You know who they are
+// - But you can both exist independently
+// - Your barber doesn't cease to exist if you move away
+//
+// Key Characteristics:
+// - Objects are loosely coupled
+// - Objects can exist independently
+// - Can be unidirectional or bidirectional
+// - Can have different multiplicities (1-to-1, 1-to-many, many-to-many)
+//
+// UML Notation:
+// Class1 ------- Class2  (solid line)
+// Class1 ------> Class2  (with arrow for direction)
+// Class1 1 ----> * Class2  (with multiplicity)
 
-If Class A must interact with Class B to fulfill its purpose, then Class A is
-associated with Class B.
+//
+// =======================================================
+// 2. TYPES BY DIRECTIONALITY
+// =======================================================
 
-Key Characteristics of Association:
-- Association reflects a "has-a" or "uses-a" relationship.
-- Associated objects are loosely coupled and can exist independently of one
-another.
-- The association can be unidirectional or bidirectional, and can follow
-different multiplicity patterns (1-to-1, 1-to-many, etc.).
-
-2. UML Representation
-In UML class diagrams, association is represented by a solid line between two
-classes.
-
----------------------------------------------------------------------------------------
-Symbol	            Meaning	                              Example Scenario
----------------------------------------------------------------------------------------
-Solid line (---)	An association between classes	        Student ---
-Teacher
-
-Arrowhead (-->)	    Directionality (who knows whom)	      Order -->
-PaymentGateway
-
-No arrowhead	    Bidirectional association	              Team --- Developer
-
-1	                Exactly one	                            Each User
-has one Profile
-
-0..1	            Zero or one (optional)	                An Employee may
-have a Manager
-
-*	                Many (zero or more)	                    A Project
-can have many Tasks
-
-1..*	            At least one	                          Each Course
-has one or more Students
-------------------------------------------------------------------------------------------------
-
-Multiplicity defines how many instances of one class can be associated with
-another. It is written near the class ends in UML diagrams.
-
-(User) 1 ----has----> 1 (Profile)
-
-The solid line is the key. Inheritance uses a solid line with a hollow triangle.
-Aggregation adds a hollow diamond. Composition adds a filled diamond. Plain
-association is just the line, optionally with an arrowhead for direction and
-multiplicity labels at each end.
-
-3. Types of Association
-Associations between classes can vary depending on how objects are connected and
-in which direction information flows.
-
-In Object-Oriented Design, associations are primarily defined by two key
-properties:
-
-Directionality — Who knows about whom?
-Multiplicity — How many objects are connected?
-
-*/
-
-/*
-3.1 Based on Direction (Directionality)
-Directionality determines which class holds a reference to the other and whether
-communication is one-way or two-way.
-
-a. Unidirectional Association
-In a unidirectional association, only one class is aware of or holds a reference
-to the other class. The referenced class has no knowledge of who is referencing
-it.
-
-Example:
-(Order) ----uses----> 1 (PaymentGateWay)
-
-An Order object uses a PaymentGateway to process transactions, but the
-PaymentGateway doesn't keep track of any orders. The order knows about the
-gateway. The gateway doesn't know about the order.
-*/
+// ---- 2.1 UNIDIRECTIONAL ASSOCIATION ----
+// Only one class knows about the other
 
 class PaymentGateway {
 public:
   void processPayment(double amount) {
-    cout << "Processing payment of $" << amount << endl;
+    std::cout << "💳 Processing payment of $" << amount << "\n";
   }
 };
 
 class Order {
 private:
-  PaymentGateway *gateway;
+  PaymentGateway *gateway; // Order knows about PaymentGateway
+  std::string orderId;
+  double totalAmount;
 
 public:
-  Order(PaymentGateway *gateway) { this->gateway = gateway; }
+  Order(const std::string &id, PaymentGateway *gw, double amount)
+      : orderId(id), gateway(gw), totalAmount(amount) {}
 
-  void checkout() { gateway->processPayment(100.0); }
+  void checkout() {
+    std::cout << "📦 Order " << orderId << " checking out...\n";
+    gateway->processPayment(totalAmount); // Uses the gateway
+    std::cout << "✅ Order complete!\n";
+  }
 };
 
-/*
-b. Bidirectional Association
-In a bidirectional association, both classes are aware of each other. Each class
-holds a reference to the other, enabling two-way communication.
+// PaymentGateway doesn't know about Order
+// This is unidirectional: Order -> PaymentGateway
 
-Example:
-(Team) 1 ----has---- * (Developer)
+// ---- 2.2 BIDIRECTIONAL ASSOCIATION ----
+// Both classes know about each other
 
-A Team has a list of Developers, and each Developer knows which Team
-they belong to. Either side can navigate to the other.
-
-Notice how addDeveloper() updates both sides of the relationship: it adds the
-developer to the team's list and sets the team reference on the developer. This
-is important. In a bidirectional association, both references must stay in sync.
-If you add a developer to the team but forget to set the developer's team
-reference, you'll get inconsistent state where the team thinks it has the
-developer, but the developer doesn't know which team it belongs to.
-
-Bidirectional associations are more complex to maintain than unidirectional
-ones. You need to keep both sides synchronized, which means more code and more
-opportunities for bugs. Use them only when both sides genuinely need to navigate
-to the other.
-*/
-
-// Forward declaration - tells compiler that Team exists
-// We need this because Developer references Team before Team is defined
-class Team;
+class Team; // Forward declaration
 
 class Developer {
 private:
-  Team *team;
+  std::string name;
+  Team *team; // Developer knows their team
 
 public:
-  void setTeam(Team *team) { this->team = team; }
+  Developer(const std::string &n) : name(n), team(nullptr) {}
+
+  void setTeam(Team *t) { team = t; }
+  Team *getTeam() const { return team; }
+  std::string getName() const { return name; }
 };
 
 class Team {
 private:
-  vector<Developer *> developers;
+  std::string name;
+  std::vector<Developer *> developers; // Team knows its developers
 
 public:
+  Team(const std::string &n) : name(n) {}
+
   void addDeveloper(Developer *dev) {
+    // Must keep both sides in sync!
     developers.push_back(dev);
     dev->setTeam(this);
   }
+
+  std::string getName() const { return name; }
+  const std::vector<Developer *> &getDevelopers() const { return developers; }
 };
 
-/*
-3.2 Based on Multiplicity
-Multiplicity defines how many instances of one class can be associated with
-instances of another class. It describes the quantity and nature of the
-connections.
+// Both Team and Developer know about each other
+// This is bidirectional: Team <--> Developer
 
-a. One-to-One Association
-Each object of one class is linked to exactly one object of the other class.
+//
+// =======================================================
+// 3. TYPES BY MULTIPLICITY
+// =======================================================
 
-Example:
-(User) 1 ----has----> 1 (Profile)
+// ---- 3.1 ONE-TO-ONE ASSOCIATION ----
+// Each object is linked to exactly one other object
 
-Each User has exactly one Profile, and each Profile belongs to one
-User. This is a bidirectional one-to-one relationship.
-
-One-to-one associations make sense when you want to separate concerns even
-though the objects are tightly paired. A User handles authentication (login,
-password, roles), while a Profile handles display information (avatar, bio,
-preferences). Merging them into one class would work, but separating them keeps
-each class focused on a single responsibility.
-
-If you find that two one-to-one associated classes are always created, modified,
-and deleted together with no independent use case, that's a signal they might
-belong as a single class instead.
-*/
-
-class User;
+class User; // Forward declaration
 
 class Profile {
 private:
-  User *user;
+  std::string avatar;
+  std::string bio;
+  User *user; // Each profile belongs to one user
 
 public:
-  void setUser(User *user) { this->user = user; }
+  Profile(const std::string &av, const std::string &b)
+      : avatar(av), bio(b), user(nullptr) {}
+
+  void setUser(User *u) { user = u; }
+  User *getUser() const { return user; }
+  std::string getAvatar() const { return avatar; }
+  std::string getBio() const { return bio; }
 };
 
 class User {
 private:
-  Profile *profile;
+  std::string username;
+  std::string email;
+  Profile *profile; // Each user has one profile
 
 public:
-  void setProfile(Profile *profile) {
-    this->profile = profile;
-    profile->setUser(this);
+  User(const std::string &user, const std::string &mail)
+      : username(user), email(mail), profile(nullptr) {}
+
+  void setProfile(Profile *p) {
+    profile = p;
+    p->setUser(this); // Keep both sides in sync
   }
+
+  Profile *getProfile() const { return profile; }
+  std::string getUsername() const { return username; }
 };
 
-/*
-b. One-to-Many Association
-One object of a class is linked to multiple objects of another class. This is
-one of the most common patterns in software design.
+// User (1) <----> (1) Profile
+// One-to-one bidirectional association
 
-Example:
-(Project) 1 ---has/contains--- * (issue)
+// ---- 3.2 ONE-TO-MANY ASSOCIATION ----
+// One object is linked to multiple objects
 
-Each Project can have many Issues (bug reports, feature requests), but
-each Issue belongs to one Project. The project holds a list of issues, and each
-issue holds a back-reference to its project.
-*/
-
-class Project;
+class Project; // Forward declaration
 
 class Issue {
 private:
-  Project *project;
+  std::string title;
+  std::string status;
+  Project *project; // Each issue belongs to one project
 
 public:
-  void setProject(Project *project) { this->project = project; }
+  Issue(const std::string &t, const std::string &s)
+      : title(t), status(s), project(nullptr) {}
+
+  void setProject(Project *p) { project = p; }
+  Project *getProject() const { return project; }
+  std::string getTitle() const { return title; }
+  std::string getStatus() const { return status; }
 };
 
 class Project {
 private:
-  vector<Issue *> issues;
+  std::string name;
+  std::vector<Issue *> issues; // Project has many issues
 
 public:
+  Project(const std::string &n) : name(n) {}
+
   void addIssue(Issue *issue) {
     issues.push_back(issue);
-    issue->setProject(this);
+    issue->setProject(this); // Keep both sides in sync
   }
+
+  std::string getName() const { return name; }
+  const std::vector<Issue *> &getIssues() const { return issues; }
 };
 
-/*
-c. Many-to-Many Association
-Multiple objects from one class are associated with multiple objects from
-another class. This is common in scenarios involving memberships, enrollments,
-or tagging systems.
+// Project (1) <----> (*) Issue
+// One-to-many bidirectional association
 
-Example:
-(User) * ---member of--- * (Group)
+// ---- 3.3 MANY-TO-MANY ASSOCIATION ----
+// Multiple objects from both sides are linked
 
-A User can be a member of multiple Groups (WhatsApp groups, Slack
-channels), and a Group can have multiple Users. Both sides hold a list of the
-other. The joinGroup() and addUser() methods keep both sides in sync.
+class Course; // Forward declaration
 
-Notice the guard clause in both joinGroup() and addUser(). Without it, calling
-alice.joinGroup(backend) would add backend to Alice's groups, then
-backend.addUser(alice) would add Alice to backend's users, then it would call
-alice.joinGroup(backend) again, and you'd be stuck in an infinite loop. The
-contains check breaks the recursion.
-
-Many-to-many associations are inherently bidirectional and require careful
-synchronization. In database design, you'd model this with a join table. In
-code, both sides hold a list of the other, and you need helper methods that
-update both sides atomically.
-*/
-
-class Group; // Forward declaration
-
-class User2 {
+class Student {
 private:
-  string name;
-  vector<Group *> groups;
+  std::string name;
+  std::vector<Course *> courses; // Student enrolled in many courses
 
 public:
-  User2(const string &name) : name(name) {}
+  Student(const std::string &n) : name(n) {}
 
-  void joinGroup(Group *group);
+  void enroll(Course *course); // Defined later
 
-  string getName() const { return name; }
-  vector<Group *> getGroups() const { return groups; }
+  std::string getName() const { return name; }
+  const std::vector<Course *> &getCourses() const { return courses; }
 };
 
-class Group {
+class Course {
 private:
-  string name;
-  vector<User2 *> users;
+  std::string name;
+  std::vector<Student *> students; // Course has many students
 
 public:
-  Group(const string &name) : name(name) {}
+  Course(const std::string &n) : name(n) {}
 
-  void addUser(User2 *user) {
-    for (auto u : users)
-      if (u == user)
+  void addStudent(Student *student) {
+    // Check if already enrolled (avoid duplicates)
+    for (auto *s : students)
+      if (s == student)
         return;
-    users.push_back(user);
-    user->joinGroup(this);
+
+    students.push_back(student);
+    student->enroll(this); // Keep both sides in sync
   }
 
-  string getName() const { return name; }
-  vector<User2 *> getUsers() const { return users; }
+  std::string getName() const { return name; }
+  const std::vector<Student *> &getStudents() const { return students; }
 };
 
-void User2::joinGroup(Group *group) {
-  for (auto g : groups)
-    if (g == group)
+void Student::enroll(Course *course) {
+  // Check if already enrolled  (avoid duplicates)
+  for (auto *c : courses)
+    if (c == course)
       return;
-  groups.push_back(group);
-  group->addUser(this);
+
+  courses.push_back(course);
+  course->addStudent(this); // Keep both sides in sync
 }
 
-/*
-4. Practical Example: Hospital Appointment System
-Let's build a system that combines multiple association types in a realistic
-domain. A hospital manages doctors, patients, rooms, and appointments. The
-relationships between these entities demonstrate unidirectional, bidirectional,
-one-to-many, and many-to-many associations working together.
+// Student (*) <----> (*) Course
+// Many-to-many bidirectional association
 
-Here's how the classes connect:
+//
+// =======================================================
+// 4. REAL-WORLD EXAMPLE: LIBRARY MANAGEMENT SYSTEM
+// =======================================================
+//
+// Demonstrates multiple association types working together:
+// - Book and BorrowRecord (one-to-many)
+// - Member and BorrowRecord (one-to-many)
+// - Author and Book (many-to-many)
 
-- Appointment holds a reference to a Room (unidirectional, the room doesn't know
-about its appointments).
-- Doctor has a list of Appointment objects, and each
-Appointment points back to its Doctor (bidirectional one-to-many).
-- Patient has a list of Appointment objects, and each Appointment points back to
-its Patient (bidirectional one-to-many).
-- Doctor and Patient are connected many-to-many through Appointment as an
-intermediary. A doctor sees many patients, and a patient can visit many doctors,
-but they don't reference each other directly.
+class Book;
+class Member;
+class BorrowRecord;
 
-Why This Design Works ?
+class Author {
+private:
+  std::string name;
+  std::vector<Book *> books;
 
-- The Appointment class is the intermediary. Instead of Doctor and Patient
-holding direct references to each other (which would create a tangled
-many-to-many), they connect through Appointment. This is a common pattern for
-modeling many-to-many relationships in code, analogous to a join table in a
-relational database.
+public:
+  Author(const std::string &n) : name(n) {}
 
-- Navigation works both ways. A doctor can find all their patients by
-walking their appointments. A patient can find all their doctors the same way.
-Neither class needs to maintain a separate list of the other.
+  void addBook(Book *book);
 
-- Room stays simple. The room doesn't need to know about appointments. It's just
-a location. This keeps the relationship unidirectional and avoids unnecessary
-coupling.
+  std::string getName() const { return name; }
+  const std::vector<Book *> &getBooks() const { return books; }
+};
 
-- Adding data to the relationship is natural. Because Appointment is a full
-object, you can add fields like time, status, notes, or diagnosis without
-modifying Doctor or Patient. Try doing that with a direct many-to-many
-reference.
-*/
+class Book {
+private:
+  std::string isbn;
+  std::string title;
+  std::vector<Author *> authors;
+  std::vector<BorrowRecord *> borrowRecords;
+
+public:
+  Book(const std::string &isbn, const std::string &title)
+      : isbn(isbn), title(title) {}
+
+  void addAuthor(Author *author) {
+    for (auto *a : authors)
+      if (a == author)
+        return;
+
+    authors.push_back(author);
+    author->addBook(this);
+  }
+
+  void addBorrowRecord(BorrowRecord *record) {
+    borrowRecords.push_back(record);
+  }
+
+  std::string getISBN() const { return isbn; }
+  std::string getTitle() const { return title; }
+  const std::vector<Author *> &getAuthors() const { return authors; }
+  bool isAvailable() const;
+};
+
+class Member {
+private:
+  std::string memberId;
+  std::string name;
+  std::vector<BorrowRecord *> borrowRecords;
+
+public:
+  Member(const std::string &id, const std::string &n) : memberId(id), name(n) {}
+
+  void addBorrowRecord(BorrowRecord *record) {
+    borrowRecords.push_back(record);
+  }
+
+  std::string getMemberId() const { return memberId; }
+  std::string getName() const { return name; }
+  const std::vector<BorrowRecord *> &getBorrowRecords() const {
+    return borrowRecords;
+  }
+};
+
+class BorrowRecord {
+private:
+  Book *book;
+  Member *member;
+  std::string borrowDate;
+  std::string returnDate;
+  bool returned;
+
+public:
+  BorrowRecord(Book *b, Member *m, const std::string &date)
+      : book(b), member(m), borrowDate(date), returnDate(""), returned(false) {
+    book->addBorrowRecord(this);
+    member->addBorrowRecord(this);
+  }
+
+  void markReturned(const std::string &date) {
+    returned = true;
+    returnDate = date;
+  }
+
+  bool isReturned() const { return returned; }
+  Book *getBook() const { return book; }
+  Member *getMember() const { return member; }
+  std::string getBorrowDate() const { return borrowDate; }
+  std::string getReturnDate() const { return returnDate; }
+};
+
+void Author::addBook(Book *book) {
+  for (auto *b : books)
+    if (b == book)
+      return;
+
+  books.push_back(book);
+  book->addAuthor(this);
+}
+
+bool Book::isAvailable() const {
+  for (auto *record : borrowRecords) {
+    if (!record->isReturned())
+      return false; // Book is currently borrowed
+  }
+  return true;
+}
+
+//
+// =======================================================
+// 5. REAL-WORLD EXAMPLE: HOSPITAL APPOINTMENT SYSTEM
+// =======================================================
+//
+// Demonstrates association as intermediary class pattern
 
 class Room {
 private:
-  string number;
+  std::string number;
   int floor;
 
 public:
-  Room(const string &number, int floor) : number(number), floor(floor) {}
-  string getNumber() const { return number; }
+  Room(const std::string &num, int f) : number(num), floor(f) {}
+
+  std::string getNumber() const { return number; }
   int getFloor() const { return floor; }
 };
 
@@ -365,117 +403,264 @@ private:
   Doctor *doctor;
   Patient *patient;
   Room *room;
-  string time;
+  std::string dateTime;
 
 public:
-  Appointment(Doctor *doctor, Patient *patient, Room *room, const string &time);
+  Appointment(Doctor *doc, Patient *pat, Room *rm, const std::string &dt);
+
   Doctor *getDoctor() const { return doctor; }
   Patient *getPatient() const { return patient; }
   Room *getRoom() const { return room; }
-  string getTime() const { return time; }
+  std::string getDateTime() const { return dateTime; }
 };
 
 class Doctor {
 private:
-  string name;
-  string specialization;
-  vector<Appointment *> appointments;
+  std::string name;
+  std::string specialization;
+  std::vector<Appointment *> appointments;
 
 public:
-  Doctor(const string &name, const string &specialization)
-      : name(name), specialization(specialization) {}
+  Doctor(const std::string &n, const std::string &spec)
+      : name(n), specialization(spec) {}
 
   void addAppointment(Appointment *appt) { appointments.push_back(appt); }
 
-  vector<Patient *> getPatients() const;
+  std::vector<Patient *> getPatients() const;
 
-  string getName() const { return name; }
-  string getSpecialization() const { return specialization; }
-  vector<Appointment *> getAppointments() const { return appointments; }
+  std::string getName() const { return name; }
+  std::string getSpecialization() const { return specialization; }
+  const std::vector<Appointment *> &getAppointments() const {
+    return appointments;
+  }
 };
 
 class Patient {
 private:
-  string name;
-  vector<Appointment *> appointments;
+  std::string name;
+  std::string patientId;
+  std::vector<Appointment *> appointments;
 
 public:
-  Patient(const string &name) : name(name) {}
+  Patient(const std::string &n, const std::string &id)
+      : name(n), patientId(id) {}
 
   void addAppointment(Appointment *appt) { appointments.push_back(appt); }
 
-  vector<Doctor *> getDoctors() const;
+  std::vector<Doctor *> getDoctors() const;
 
-  string getName() const { return name; }
-  vector<Appointment *> getAppointments() const { return appointments; }
+  std::string getName() const { return name; }
+  std::string getPatientId() const { return patientId; }
+  const std::vector<Appointment *> &getAppointments() const {
+    return appointments;
+  }
 };
 
-Appointment::Appointment(Doctor *doctor, Patient *patient, Room *room,
-                         const string &time)
-    : doctor(doctor), patient(patient), room(room), time(time) {
+// Implementation
+Appointment::Appointment(Doctor *doc, Patient *pat, Room *rm,
+                         const std::string &dt)
+    : doctor(doc), patient(pat), room(rm), dateTime(dt) {
   doctor->addAppointment(this);
   patient->addAppointment(this);
 }
 
-vector<Patient *> Doctor::getPatients() const {
-  vector<Patient *> result;
+std::vector<Patient *> Doctor::getPatients() const {
+  std::vector<Patient *> result;
   for (auto *appt : appointments) {
     auto *p = appt->getPatient();
-    if (find(result.begin(), result.end(), p) == result.end())
+    if (std::find(result.begin(), result.end(), p) == result.end())
       result.push_back(p);
   }
   return result;
 }
 
-vector<Doctor *> Patient::getDoctors() const {
-  vector<Doctor *> result;
+std::vector<Doctor *> Patient::getDoctors() const {
+  std::vector<Doctor *> result;
   for (auto *appt : appointments) {
     auto *d = appt->getDoctor();
-    if (find(result.begin(), result.end(), d) == result.end())
+    if (std::find(result.begin(), result.end(), d) == result.end())
       result.push_back(d);
   }
   return result;
 }
 
+//
+// =======================================================
+// 6. DEMONSTRATION
+// =======================================================
+//
+
 int main() {
-  // Usage - many to many association
-  User2 jack("Jack");
-  User2 john("John");
+  std::cout << "=== Association in C++ Demo ===\n\n";
 
-  Group backend("Backend");
-  Group devOps("DevOps");
+  // ---- Unidirectional Association ----
+  std::cout << "1. Unidirectional Association (Order -> PaymentGateway):\n";
+  PaymentGateway gateway;
+  Order order1("ORD001", &gateway, 150.00);
+  order1.checkout();
 
-  jack.joinGroup(&backend);
-  jack.joinGroup(&devOps);
-  john.joinGroup(&backend);
+  // ---- Bidirectional Association ----
+  std::cout << "\n2. Bidirectional Association (Team <-> Developer):\n";
+  Team backend("Backend Team");
+  Developer dev1("Alice");
+  Developer dev2("Bob");
 
-  // --------- Practical Example ---------
+  backend.addDeveloper(&dev1);
+  backend.addDeveloper(&dev2);
+
+  std::cout << "Team: " << backend.getName() << "\n";
+  std::cout << "Members:\n";
+  for (auto *dev : backend.getDevelopers()) {
+    std::cout << "  - " << dev->getName() << "\n";
+  }
+
+  // ---- One-to-One Association ----
+  std::cout << "\n3. One-to-One Association (User <-> Profile):\n";
+  User user("john_doe", "john@example.com");
+  Profile profile("avatar.jpg", "Software Engineer");
+  user.setProfile(&profile);
+
+  std::cout << "User: " << user.getUsername() << "\n";
+  std::cout << "Bio: " << user.getProfile()->getBio() << "\n";
+
+  // ---- One-to-Many Association ----
+  std::cout << "\n4. One-to-Many Association (Project <-> Issues):\n";
+  Project project("Website Redesign");
+  Issue bug1("Login button not working", "Open");
+  Issue bug2("Homepage loads slowly", "In Progress");
+  Issue feature1("Add dark mode", "Open");
+
+  project.addIssue(&bug1);
+  project.addIssue(&bug2);
+  project.addIssue(&feature1);
+
+  std::cout << "Project: " << project.getName() << "\n";
+  std::cout << "Issues:\n";
+  for (auto *issue : project.getIssues()) {
+    std::cout << "  - " << issue->getTitle() << " [" << issue->getStatus()
+              << "]\n";
+  }
+
+  // ---- Many-to-Many Association ----
+  std::cout << "\n5. Many-to-Many Association (Student <-> Course):\n";
+  Student alice("Alice");
+  Student bob("Bob");
+
+  Course cpp("C++ Programming");
+  Course ds("Data Structures");
+
+  alice.enroll(&cpp);
+  alice.enroll(&ds);
+  bob.enroll(&cpp);
+
+  std::cout << "Student: " << alice.getName() << "\n";
+  std::cout << "Enrolled in:\n";
+  for (auto *course : alice.getCourses()) {
+    std::cout << "  - " << course->getName() << "\n";
+  }
+
+  std::cout << "\nCourse: " << cpp.getName() << "\n";
+  std::cout << "Students:\n";
+  for (auto *student : cpp.getStudents()) {
+    std::cout << "  - " << student->getName() << "\n";
+  }
+
+  // ---- Library System ----
+  std::cout << "\n6. Real-World Example (Library System):\n";
+  Author jkRowling("J.K. Rowling");
+  Book harryPotter("978-0439708180", "Harry Potter and Sorcerer's Stone");
+  harryPotter.addAuthor(&jkRowling);
+
+  Member member1("M001", "Charlie");
+  BorrowRecord record1(&harryPotter, &member1, "2024-01-15");
+
+  std::cout << "Book: " << harryPotter.getTitle() << "\n";
+  std::cout << "Author: " << harryPotter.getAuthors()[0]->getName() << "\n";
+  std::cout << "Available: " << (harryPotter.isAvailable() ? "No" : "Yes")
+            << "\n";
+  std::cout << "Borrowed by: " << member1.getName() << " on "
+            << record1.getBorrowDate() << "\n";
+
+  // ---- Hospital System ----
+  std::cout << "\n7. Real-World Example (Hospital System):\n";
   Doctor drSmith("Dr. Smith", "Cardiology");
   Doctor drPatel("Dr. Patel", "Neurology");
 
-  Patient alice("Alice");
-  Patient bob("Bob");
+  Patient patientAlice("Alice Johnson", "P001");
+  Patient patientDavid("David Brown", "P002");
 
   Room room101("101", 1);
   Room room205("205", 2);
 
-  Appointment a1(&drSmith, &alice, &room101, "9:00 AM");
-  Appointment a2(&drSmith, &bob, &room101, "10:00 AM");
-  Appointment a3(&drPatel, &alice, &room205, "2:00 PM");
+  Appointment appt1(&drSmith, &patientAlice, &room101, "2024-02-18 09:00");
+  Appointment appt2(&drSmith, &patientDavid, &room101, "2024-02-18 10:00");
+  Appointment appt3(&drPatel, &patientAlice, &room205, "2024-02-18 14:00");
 
-  cout << drSmith.getName() << "'s patients:" << endl;
-  for (auto *p : drSmith.getPatients())
-    cout << "  - " << p->getName() << endl;
+  std::cout << drSmith.getName() << "'s patients:\n";
+  for (auto *p : drSmith.getPatients()) {
+    std::cout << "  - " << p->getName() << "\n";
+  }
 
-  cout << alice.getName() << "'s doctors:" << endl;
-  for (auto *d : alice.getDoctors())
-    cout << "  - " << d->getName() << " (" << d->getSpecialization() << ")"
-         << endl;
+  std::cout << "\n" << patientAlice.getName() << "'s doctors:\n";
+  for (auto *d : patientAlice.getDoctors()) {
+    std::cout << "  - " << d->getName() << " (" << d->getSpecialization()
+              << ")\n";
+  }
 
-  cout << drSmith.getName() << "'s schedule:" << endl;
-  for (auto *a : drSmith.getAppointments())
-    cout << "  - " << a->getTime() << " with " << a->getPatient()->getName()
-         << " in Room " << a->getRoom()->getNumber() << endl;
+  std::cout << "\n" << drSmith.getName() << "'s schedule:\n";
+  for (auto *appt : drSmith.getAppointments()) {
+    std::cout << "  - " << appt->getDateTime() << " with "
+              << appt->getPatient()->getName() << " in Room "
+              << appt->getRoom()->getNumber() << "\n";
+  }
 
+  std::cout << "\n=== Demo Complete ===\n";
   return 0;
 }
+
+/*
+📘 Key Insights:
+
+1. **Association is the loosest relationship**:
+   - Objects can exist independently
+   - No ownership or lifecycle dependency
+   - Just "uses" or "knows about"
+
+2. **Directionality matters**:
+   - Unidirectional: Only one class knows about the other
+   - Bidirectional: Both classes know each other (must keep in sync!)
+
+3. **Multiplicity patterns**:
+   - 1-to-1: User <-> Profile
+   - 1-to-many: Project <-> Issues
+   - many-to-many: Student <-> Course
+
+4. **Synchronization in bidirectional associations**:
+   - Always update both sides of the relationship
+   - Use guard clauses to prevent infinite loops
+   - Keep references consistent
+
+5. **Intermediary class pattern**:
+   - Use an intermediary class (like Appointment) for many-to-many
+   - Allows adding relationship data
+   - Simplifies navigation
+   - Analogous to join tables in databases
+
+6. **When to use association**:
+   ✅ Objects need to communicate
+   ✅ Objects can exist independently
+   ✅ No ownership relationship
+   ✅ Loose coupling desired
+
+Best Practices:
+- Prefer unidirectional when possible (simpler)
+- Always synchronize bidirectional associations
+- Use intermediary classes for complex many-to-many
+- Avoid circular dependencies
+- Document the multiplicity
+
+Association vs Other Relationships:
+- Association: Loosely coupled, independent lifetimes
+- Aggregation: "has-a" with shared ownership
+- Composition: "has-a" with exclusive ownership, dependent lifetimes
+*/
