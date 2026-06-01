@@ -112,6 +112,15 @@ public:
   void setSide(const double len) { this->sideLength = len; }
 };
 
+void resize(Shape &shape) {
+  if (auto rect = dynamic_cast<Rectangle *>(&shape)) {
+    rect->setWidth(5);
+    rect->setHeight(10);
+  } else if (auto sq = dynamic_cast<Square *>(&shape)) {
+    sq->setSide(5);
+  }
+}
+
 int main() {
   // Before LSP
   // Rectangle rect;
@@ -120,8 +129,11 @@ int main() {
   // resize(sq);   // Area: 100 -- LSP violation!
 
   // After LSP
-  Rectangle rectangle(5, 10);
-  Square square(5);
+  Rectangle rectangle(0, 0);
+  Square square(0);
+
+  resize(rectangle);
+  resize(square);
 
   cout << "Rectangle area: " << static_cast<int>(rectangle.getArea()) << endl;
   cout << "Square area: " << static_cast<int>(square.getArea()) << endl;
