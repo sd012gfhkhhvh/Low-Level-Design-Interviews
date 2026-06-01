@@ -33,7 +33,7 @@ using namespace std;
 
 /*
 ==================================================
-Example - 1: The Problem: A Growing Payment System
+Exercise 1: The Problem: A Growing Payment System
 ==================================================
 
 Problem: If you want to add another payment options like upi, strip etc
