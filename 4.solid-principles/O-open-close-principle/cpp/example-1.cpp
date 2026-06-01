@@ -26,10 +26,10 @@ introduce new behavior simply by creating new classes that implement the
 existing interface.
 */
 
+#include <iomanip>
 #include <ios>
 #include <iostream>
 using namespace std;
-#include <iomanip>
 
 /*
 ==================================================
