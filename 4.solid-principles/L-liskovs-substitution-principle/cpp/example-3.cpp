@@ -22,38 +22,94 @@ flight should accept FlyingBird
 #include <iostream>
 #include <stdexcept>
 #include <string>
+using namespace std;
+
+/*
+=======================
+Before LSP
+=======================
+*/
 
 // Before: Penguin extends Bird but can't fly
+// class Bird {
+// public:
+//   virtual void eat() { std::cout << "Bird is eating" << std::endl; }
+
+//   virtual void fly() { std::cout << "Bird is flying" << std::endl; }
+
+//   virtual ~Bird() = default;
+// };
+
+// class Sparrow : public Bird {
+// public:
+//   void eat() override { std::cout << "Sparrow is eating" << std::endl; }
+//   void fly() override { std::cout << "Sparrow is flying" << std::endl; }
+// };
+
+// class Penguin : public Bird {
+// public:
+//   void eat() override { std::cout << "Penguin is eating" << std::endl; }
+//   void fly() override { throw std::runtime_error("Penguins can't fly!"); }
+// };
+
+// void makeBirdFly(Bird &bird) {
+//   bird.fly(); // Crashes for Penguin!
+// }
+
+/*
+=======================
+After LSP
+=======================
+*/
+
+/*
+=========================================================
+                     INTERFACE
+=========================================================
+*/
 class Bird {
 public:
-  virtual void eat() { std::cout << "Bird is eating" << std::endl; }
-
-  virtual void fly() { std::cout << "Bird is flying" << std::endl; }
-
+  virtual void eat() = 0;
   virtual ~Bird() = default;
 };
 
-class Sparrow : public Bird {
+class FlyingBird : public Bird {
 public:
-  void eat() override { std::cout << "Sparrow is eating" << std::endl; }
-  void fly() override { std::cout << "Sparrow is flying" << std::endl; }
+  virtual void fly() = 0;
+};
+
+/*
+=========================================================
+                CONCRETE Inplementations
+=========================================================
+*/
+
+class Sparrow : public FlyingBird {
+public:
+  void eat() override { cout << "Sparrow is eating" << endl; }
+
+  void fly() override { cout << "Sparrow is flying" << endl; }
 };
 
 class Penguin : public Bird {
 public:
-  void eat() override { std::cout << "Penguin is eating" << std::endl; }
-  void fly() override { throw std::runtime_error("Penguins can't fly!"); }
+  void eat() override { cout << "Penguin is eating" << endl; }
 };
 
-void makeBirdFly(Bird &bird) {
-  bird.fly(); // Crashes for Penguin!
-}
-
 int main() {
+  // Before LSP
+  // Sparrow sparrow;
+  // Penguin penguin;
+  // makeBirdFly(sparrow); // Works fine
+  // makeBirdFly(penguin); // runtime_error!
+
+  // After LSP
   Sparrow sparrow;
+  sparrow.eat();
+  sparrow.fly();
+
   Penguin penguin;
-  makeBirdFly(sparrow); // Works fine
-  makeBirdFly(penguin); // runtime_error!
+  penguin.eat();
   return 0;
 }
 
