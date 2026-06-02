@@ -168,9 +168,3 @@ int main() {
 
   return 0;
 }
-
-// TODO: Create Printable, Scannable, Faxable, and Stapleable interfaces.
-// TODO: Refactor BasicPrinter to implement only Printable.
-// TODO: Create an OfficePrinter that implements Printable, Scannable, and
-// Faxable.
-// TODO: Create a FullDevice that implements all four interfaces.
