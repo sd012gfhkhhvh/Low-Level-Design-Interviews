@@ -76,13 +76,13 @@ synchronize.
 class ThreadSafeSingleton {
 private:
   static ThreadSafeSingleton *instance;
-  static mutex lock;
+  static mutex _mutex;
 
   ThreadSafeSingleton() {};
 
 public:
   static ThreadSafeSingleton *getInstance() {
-    lock_guard<mutex> guard(lock);
+    lock_guard<mutex> lock(_mutex);
     if (instance == nullptr) {
       instance = new ThreadSafeSingleton();
     }
@@ -105,7 +105,7 @@ private:
   // Holds the single shared instance (needs safe publication in C++)
   static DoubleCheckedSingleton *instance;
   // Lock used only during first-time creation
-  static mutex lock;
+  static mutex _mutex;
 
   // Private constructor prevents external instantiation
   DoubleCheckedSingleton() {}
@@ -117,7 +117,7 @@ public:
     // Fast path: first check without locking
     if (instance == nullptr) {
       // Lock only when the instance might need to be created
-      lock_guard<mutex> guard(lock);
+      lock_guard<mutex> lock(_mutex);
       // Second check inside the lock (prevents double creation)
       if (instance == nullptr) {
         instance = new DoubleCheckedSingleton();
