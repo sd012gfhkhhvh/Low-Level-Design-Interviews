@@ -26,7 +26,6 @@ pools, File system
 */
 #include <iostream>
 #include <mutex>
-#include <thread>
 
 using namespace std;
 
@@ -56,6 +55,9 @@ public:
     return instance;
   }
 };
+
+// Definition of the static member - to avoid linker error
+LazySingleton *LazySingleton::instance = nullptr;
 
 /*
 ===============================
@@ -89,6 +91,9 @@ public:
     return instance;
   }
 };
+
+// Definition of the static member - to avoid linker error
+ThreadSafeSingleton *ThreadSafeSingleton::instance = nullptr;
 
 /*
 ============================================
@@ -128,6 +133,9 @@ public:
     return instance;
   }
 };
+
+// Definition of the static member - to avoid linker error
+DoubleCheckedSingleton *DoubleCheckedSingleton::instance = nullptr;
 
 /*
 ================================================
