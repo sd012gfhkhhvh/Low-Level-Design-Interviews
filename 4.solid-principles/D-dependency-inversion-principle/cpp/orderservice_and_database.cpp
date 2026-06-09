@@ -1,7 +1,7 @@
 /*
-=====================================
-Exercise 1: OrderService and Database
-=====================================
+=============================================
+          OrderService and Database
+=============================================
 Refactor OrderService
 
 Problem: An OrderService directly creates and uses a MySQLDatabase object to

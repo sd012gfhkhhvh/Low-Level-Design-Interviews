@@ -1,6 +1,6 @@
 /*
 ============================================
-Exercise 1: The Rectangle/Square Problem
+       The Rectangle/Square Problem
 ============================================
 Refactor Rectangle/Square Class
 

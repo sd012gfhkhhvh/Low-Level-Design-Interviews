@@ -1,7 +1,7 @@
 /*
-============================
-Exercise 2: Fat UserService
-===========================
+====================================
+          Fat UserService
+====================================
 Refactor UserService
 
 Problem: A UserService interface bundles CRUD operations, admin operations (ban,

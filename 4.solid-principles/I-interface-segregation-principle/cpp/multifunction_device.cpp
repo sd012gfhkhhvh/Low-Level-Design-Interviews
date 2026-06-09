@@ -1,7 +1,7 @@
 /*
-===================================
-Exercise 1: Fat MultiFunctionDevice
-===================================
+================================================
+          Fat MultiFunctionDevice
+================================================
 Refactor MultiFunctionDevice
 
 Problem: You have a MultiFunctionDevice interface with print(), scan(), fax(),
