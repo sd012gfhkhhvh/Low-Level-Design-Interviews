@@ -14,6 +14,20 @@ factory class.
 
 This is NOT the GoF Factory Method pattern.
 This is the commonly used Simple Factory pattern.
+
+In a Simple Factory, there is no creator hierarchy.
+
+A single factory class contains a method that decides which concrete product to
+instantiate based on some input.
+
+Client
+  |
+  v
+DocumentFactory
+  |
+  +----> PdfDocument
+  +----> HtmlDocument
+  +----> CsvDocument
 */
 
 #include <iostream>
