@@ -9,6 +9,12 @@
 
 The Adapter Design Pattern is a structural pattern that allows incompatible interfaces to work together by converting the interface of one class into another that the client expects. It acts as a bridge (translator) between two incompatible interfaces.
 
+## Real World Analogy:
+
+Think of traveling to Europe from the US. Your laptop plug (the client) only has flat prongs, but the European wall outlet (the adaptee) only accepts round pins. You cannot plug it in directly. Instead, you use a travel adapter that takes the flat prongs and converts them into round pins.
+
+The Adapter Pattern works the same way: it acts as a translator between two incompatible interfaces, allowing them to work together without modifying either one.
+
 ## What problem does it solve?
 
 **The Problem:**

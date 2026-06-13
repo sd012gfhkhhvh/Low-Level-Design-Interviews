@@ -3,10 +3,17 @@
 ## Resources
 
 - [Refactoring Guru: Decorator](https://refactoring.guru/design-patterns/decorator)
+- [Algomaster.io: Decorator](https://algomaster.io/learn/lld/decorator)
 
 ## What is the Decorator Design Pattern?
 
 The Decorator Design Pattern is a structural pattern that lets you dynamically add new behavior or responsibilities to objects without modifying their underlying code. It achieves this by wrapping the original object inside a new "decorator" object that implements the same interface.
+
+## Real World Analogy:
+
+Think of a plain coffee. Now add milk. Now add sugar. Each addition enhances the original but doesn’t change the base.
+
+The Decorator Pattern works the same way: stacking behaviors while keeping the core intact.
 
 ## What problem does it solve?
 
