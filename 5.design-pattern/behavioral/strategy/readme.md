@@ -3,6 +3,7 @@
 ## Resources
 
 - [Refactoring Guru: Strategy](https://refactoring.guru/design-patterns/strategy)
+- [Algomaster: Strategy](https://algomaster.io/learn/lld/strategy)
 
 ## What is the Strategy Design Pattern?
 
@@ -11,6 +12,7 @@ The Strategy Design Pattern is a behavioral pattern that defines a family of alg
 ## Real World Analogy:
 
 Think about how you might travel from your home to the airport. You have several options:
+
 - Drive yourself: Flexible timing, but you pay for parking.
 - Taxi/Uber: Door-to-door service, variable pricing.
 - Public transit: Cheapest option, but takes longer.
